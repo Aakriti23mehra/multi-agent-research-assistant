@@ -1,57 +1,27 @@
-# multi-agent-research-assistant
-A multi-agent AI system that searches real academic papers from arXiv and OpenAlex, then generates structured technical research reports automatically.
+# Multi-Agent Research Assistant
 
-# MultiAgentResearchAssistant Crew
+A multi-agent AI system built using the **CrewAI** framework that searches real, validated academic papers from **arXiv** and **OpenAlex**, extracts raw technical data, and automatically generates structured research reports.
 
-Welcome to the MultiAgentResearchAssistant Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+This project is tailored specifically to bypass historical background/fluff, focusing strictly on active quantitative matrices and deployment-oriented summaries.
 
-## Installation
+---
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+## 🛠️ Project Architecture
+The framework orchestrates specialized AI agents working sequentially to build production-ready intelligence:
+1. **Planner:** Outlines the core technical parameters and tracking metrics for the target domain.
+2. **Researcher:** Utilizes search APIs to query arXiv and OpenAlex, strictly filtering for recent academic papers (2024–2026).
+3. **Writer:** Compiles and formats raw findings into structural research metrics and deployment-oriented summaries.
 
-First, if you haven't already, install uv:
+---
 
+## 🚀 Setup & Installation
+
+### Prerequisites
+* Python `>=3.10` and `<3.14`
+* **UV** package manager (for ultra-fast dependency management)
+
+### 1. Install Dependencies
+Sabse pehle `uv` install karein aur project package dependencies ko lock karein:
 ```bash
 pip install uv
-```
-
-Next, navigate to your project directory and install the dependencies:
-
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
 crewai install
-```
-### Customizing
-
-**Add your `OPENAI_API_KEY` into the `.env` file**
-
-- Modify `src/multi_agent_research_assistant/config/agents.yaml` to define your agents
-- Modify `src/multi_agent_research_assistant/config/tasks.yaml` to define your tasks
-- Modify `src/multi_agent_research_assistant/crew.py` to add your own logic, tools and specific args
-- Modify `src/multi_agent_research_assistant/main.py` to add custom inputs for your agents and tasks
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
-
-```bash
-$ crewai run
-```
-
-This command initializes the multi_agent_research_assistant Crew, assembling the agents and assigning them tasks as defined in your configuration.
-
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
-
-## Understanding Your Crew
-
-The multi_agent_research_assistant Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
-
-## Support
-
-For support, questions, or feedback regarding the MultiAgentResearchAssistant Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
-
-Let's create wonders together with the power and simplicity of crewAI.
