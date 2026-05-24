@@ -1,0 +1,210 @@
+planning_task:
+  description: >
+    Analyze the technical topic: "{topic}".
+    Break into exactly 4 concrete engineering pillars for this domain.
+
+    Generate exactly 4 search queries. STRICT RULES:
+    - Max 3 words before the year. Use abbreviations: RAG, LLM, CNN, NLP, ViT
+    - No brackets, quotes, colons, hyphens, "site:" or special characters
+    - Query 4 = 2 core words ONLY, no year (broadest fallback)
+
+    OUTPUT FORMAT:
+    ## Research Roadmap: {topic}
+    ### Pillar 1: [Name]
+    [2 sentences]
+    ### Pillar 2: [Name]
+    [2 sentences]
+    ### Pillar 3: [Name]
+    [2 sentences]
+    ### Pillar 4: [Name]
+    [2 sentences]
+    ### Search Queries
+    1. [2-3 words + 2025]
+    2. [2-3 words + 2024]
+    3. [2-3 words + 2023]
+    4. [2 core words only — NO year]
+
+  expected_output: >
+    4 pillars + 4 short queries (no special characters). Max 250 words.
+  agent: planner_agent
+
+research_task:
+  description: >
+    Find papers on "{topic}" using the search tools.
+
+    STEP 1 — CALL multi_source_search FIRST
+    Call: multi_source_search("<query 1 from planner>")
+    Searches arXiv + OpenAlex. DOAJ backup if < 5 papers found.
+    Returns pre-formatted blocks with ALL 9 fields filled.
+
+    STEP 2 — COPY THE OUTPUT DIRECTLY
+    PASTE each paper block EXACTLY as returned. Do NOT rewrite.
+    Separate papers with ---
+
+    STEP 3 — IF FEWER THAN 2 PAPERS RETURNED
+    Try: multi_source_search("<query 2>") → arxiv_search("<2 words>")
+    → openalex_search("<2 words>") → doaj_search("<keyword>") → web search
+
+    STEP 4 — RELEVANCE CHECK
+    Each paper must be directly about "{topic}". Skip irrelevant ones.
+
+    YEAR POLICY: Prefer 2023-2025. Accept 2020+.
+    Copy Year and URL EXACTLY from tool — never change them.
+
+    FAILURE: "INSUFFICIENT VALID PAPERS FOUND — REFINE SEARCH"
+
+  expected_output: >
+    2-5 paper blocks copied from tool output.
+    Each has all 9 fields. Papers separated by ---.
+  agent: researcher_agent
+
+writing_task:
+  description: >
+    Write a rigorous engineering report on "{topic}" using ONLY the papers
+    provided by the Researcher agent.
+
+    ============================================================
+    CORE RULE — EXTRACT SPECIFIC DETAILS FROM EACH PAPER
+    ============================================================
+    For every paper, extract and write ALL of these:
+
+    (a) WHAT was built — name the exact system, method, framework, dataset
+        BAD:  "The paper proposes a RAG method."
+        GOOD: "Upadhyay et al. introduce the TREC 2025 RAG Track, a shared
+               evaluation framework using MS MARCO V2.1 with long narrative queries."
+
+    (b) WHY it matters — what SPECIFIC problem does it solve?
+        BAD:  "This addresses limitations of existing systems."
+        GOOD: "This addresses the gap between short keyword queries and deep
+               search tasks requiring multi-sentence reasoning responses."
+
+    (c) HOW it works — extract the mechanism from Technical Contribution field
+        BAD:  "It uses retrieval and generation."
+        GOOD: "It performs semantic search over curated Islamic classical sources
+               to retrieve relevant passages before generating answers with Gemini."
+
+    (d) NUMBERS — use exact numbers from Metrics field if available.
+        If Metrics = "See paper", write WHICH benchmark/dataset was used.
+        BAD:  "achieves good results"
+        GOOD: "evaluated on MS MARCO V2.1 narrative queries"
+
+    ============================================================
+    BANNED PHRASES — NEVER USE THESE
+    ============================================================
+    ❌ "can be applied in pipelines"
+    ❌ "recent years have seen"
+    ❌ "significant advancements"
+    ❌ "rapidly evolving field"
+    ❌ "it is well known that"
+    ❌ "various methods have been proposed"
+    ❌ "state-of-the-art" without exact number
+    ❌ "improves large language models" (say HOW it improves)
+    ❌ "addresses the limitations" (say WHICH limitations)
+    ❌ "can be applied in [domain]" (say HOW specifically)
+
+    ============================================================
+    SECTION-SPECIFIC WRITING RULES
+    ============================================================
+
+    Section 3 — Production Bottlenecks:
+    Extract SPECIFIC constraints FROM the papers — not generic "latency/VRAM".
+    Ask: what computational cost, dataset curation burden, or scaling
+    challenge does each paper mention?
+    GOOD example: "[Miao et al., 2025] note that medical RAG requires curating
+    domain corpora from PubMed, IEEE Xplore, and Web of Science separately,
+    introducing indexing overhead not present in general-purpose RAG systems."
+
+    Section 4 — Deployment Roadmap:
+    Give CONCRETE steps based on what each paper actually did.
+    NEVER write "apply X in your pipeline".
+    Ask: what specific tool, dataset, model, or config did the paper use?
+    GOOD example: "[Boghdady, 2025] shows that combining Gemini with a curated
+    domain vector index outperforms general web RAG — build your domain index
+    from authoritative sources (e.g. PubMed for medical, classical texts for
+    Islamic QA) before connecting to the generation step."
+
+    ============================================================
+    REPORT STRUCTURE
+    ============================================================
+
+    # {topic}: Technical State-of-the-Art Report
+
+    ## 1. Core Architectural Framework & Domain Shifts (2020-2026)
+    [4-6 sentences. Every sentence cites [Author, Year].
+    Name every system, dataset, framework mentioned.
+    Use Technical Contribution + Key Finding from Researcher.
+    Write WHAT was built + WHY it matters + HOW it works.]
+
+    ## 2. Quantitative Performance & Benchmarking Matrix
+    | Model/Method/Framework | Year | Database | Architecture | Dataset/Benchmark | Key Metric | Advantage |
+    | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+    [One row per paper.
+    Dataset/Benchmark: ALWAYS fill — use what the paper evaluated on.
+    Key Metric: ONLY use numbers from Metrics field if they say a real number.
+    If Metrics = "See paper" → write the metric TYPE used (e.g., "F1 score", "AUROC").
+    NEVER invent numbers like "0.85 F1" if Metrics field says "See paper".
+    Fabricating metrics is worse than writing "See paper".]
+
+    ## 3. Production Bottlenecks & Open Engineering Gaps
+    [3-4 sentences. Every sentence cites [Author, Year].
+    Extract SPECIFIC constraints from each paper.
+    Name the actual limitation — not generic "latency" or "VRAM".]
+
+    ## 4. Practical Infrastructure Deployment Roadmap
+    [3-4 sentences. Every sentence gives a CONCRETE action.
+    Reference specific tools, datasets, models from papers.
+    Never write "apply X in your pipeline" — say exactly HOW.]
+
+    ## References
+    [1] Author(s). "Title." Year. Database. URL
+    [continue for all papers]
+
+    RULES: Table mandatory. References mandatory. 600-800 words.
+
+  expected_output: >
+    Markdown report (600-800 words). All 4 sections.
+    7-column table with Dataset/Benchmark always filled.
+    Specific named systems + concrete mechanisms per paper.
+    Zero banned phrases. Complete References with full URLs.
+  agent: writer_agent
+
+review_task:
+  description: >
+    Audit and fix the report on "{topic}".
+
+    CHECK 1 — COMPLETENESS
+    All 4 sections + References + Table? Dataset/Benchmark filled every row?
+
+    CHECK 2 — SPECIFICITY (most important)
+    For every sentence in sections 3 and 4:
+    Does it name a SPECIFIC system, dataset, model, or constraint?
+    FAIL: "RAG systems can be applied in pipelines to improve LLMs"
+    PASS: "Miao et al. curate domain corpora from PubMed and IEEE Xplore,
+           requiring dedicated indexing pipelines separate from general RAG"
+    Does section 4 give CONCRETE steps — not just "apply X in pipeline"?
+    FAIL: "The system can be applied in pipelines"
+    PASS: "Build a curated PubMed vector index using LlamaIndex, then
+           connect it to the RAG generation step with Gemini or GPT-4"
+    Rewrite every vague sentence using paper abstracts and Technical
+    Contribution fields from Researcher output.
+
+    CHECK 3 — BANNED PHRASES
+    Zero: "can be applied in pipelines", "recent years", "significant
+    advancements", "rapidly evolving", "it is well known", "various methods",
+    "addresses the limitations", "improves LLMs" without saying how.
+    Replace each with specific content from research data.
+
+    CHECK 4 — TABLE
+    Dataset/Benchmark column filled for every paper?
+    Key Metric has metric name or number (not just "See paper")?
+    Fill from paper abstracts if missing.
+
+    Fix ALL issues. Output COMPLETE corrected report.
+    First line: ✅ VERIFIED TECH REPORT. Max 900 words.
+
+  expected_output: >
+    Complete report. First line: ✅ VERIFIED TECH REPORT
+    Every sentence names specific systems/datasets/mechanisms.
+    Sections 3 and 4 have concrete actionable content.
+    Table fully filled. Zero banned phrases. Max 900 words.
+  agent: review_agent
