@@ -26,6 +26,10 @@ Sabse pehle `uv` install karein aur project package dependencies ko lock karein:
 pip install uv
 crewai install
 
+
+
 ## 🎬 Live Project Demo
 
-👉 [Watch the Live Demo](https://drive.google.com/file/d/1ZkaS9_WxvelFx0TPR1Fuo-4nQQ-tmF0i/view?usp=drive_link)
+See the real-time detection system and inference pipeline in action here:
+
+👉 <a href="https://drive.google.com/file/d/1ZkaS9_WxvelFx0TPR1Fuo-4nQQ-tmF0i/view?usp=drive_link" target="_blank" rel="noopener noreferrer">Watch the Live Demo</a>
