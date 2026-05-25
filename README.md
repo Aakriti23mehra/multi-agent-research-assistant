@@ -6,11 +6,20 @@ This project is tailored specifically to bypass historical background/fluff, foc
 
 ---
 
-## 🛠️ Project Architecture
-The framework orchestrates specialized AI agents working sequentially to build production-ready intelligence:
-1. **Planner:** Outlines the core technical parameters and tracking metrics for the target domain.
-2. **Researcher:** Utilizes search APIs to query arXiv and OpenAlex, strictly filtering for recent academic papers (2024–2026).
-3. **Writer:** Compiles and formats raw findings into structural research metrics and deployment-oriented summaries.
+### 🤖 AI Agent & Model Roles:
+* **Planner Agent (Groq LLM):** Outlines the core technical parameters and tracking metrics for the target domain.
+* **Researcher Agent (Groq LLM):** Utilizes search APIs (Serper/CORE) to query arXiv and OpenAlex, strictly filtering for recent academic papers (2024–2026).
+* **Writer Agent (Groq LLM):** Compiles and formats raw findings into structural research metrics and deployment-oriented summaries.
+
+---
+
+### 🚀 Project Structure
+
+The repository contains configuration files and core execution scripts tailored for multi-agent workflows:
+
+* `app.py` - Core Streamlit/UI or orchestration script designed to execute agent workflows and handle local application layers.
+* `requirements.txt` / `pyproject.toml` - Dependency configuration mapped for fast execution using the `uv` package manager.
+* `testing.py` - Evaluation script designed to run test inferences, validate tool outputs, and analyze agent sequence execution.
 
 ---
 
@@ -26,10 +35,3 @@ Sabse pehle `uv` install karein aur project package dependencies ko lock karein:
 ```bash
 pip install uv
 crewai install
-
-## 🛠️ Project Demo
-## 🎬 Demo
-
-👉 [Click here to watch the demo](https://drive.google.com/file/d/1ZkaS9_WxvelFx0TPR1Fuo-4nQQ-tmF0i/view?usp=sharing)
-
----
