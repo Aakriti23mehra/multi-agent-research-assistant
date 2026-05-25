@@ -27,4 +27,5 @@ pip install uv
 crewai install
 
 ## 🎬 Live Project Demo
+
 👉 [Watch the Live Demo](https://drive.google.com/file/d/1ZkaS9_WxvelFx0TPR1Fuo-4nQQ-tmF0i/view?usp=drive_link)
