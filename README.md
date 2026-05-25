@@ -27,5 +27,4 @@ pip install uv
 crewai install
 
 ## 🎬 Live Project Demo
-See the real-time detection system and inference pipeline in action here:
-👉 [Click Here to Watch the Live Test Video Demo ](https://drive.google.com/file/d/1ZkaS9_WxvelFx0TPR1Fuo-4nQQ-tmF0i/view?usp=drive_link)
+👉 [Watch the Live Demo](https://drive.google.com/file/d/1ZkaS9_WxvelFx0TPR1Fuo-4nQQ-tmF0i/view?usp=drive_link)
