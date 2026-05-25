@@ -56,10 +56,8 @@ python app.py
 
 ---
 
-## 📄 Project Documentation
+## 📄 Demo
 
-Access the complete project documentation here:
-
-[Project Documentation (Google Drive)](https://drive.google.com/file/d/1ZkaS9_WxvelFx0TPR1Fuo-4nQQ-tmF0i/view?usp=sharing)
+[Test video ](https://drive.google.com/file/d/1ZkaS9_WxvelFx0TPR1Fuo-4nQQ-tmF0i/view?usp=sharing)
 
 ---
